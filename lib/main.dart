@@ -1,7 +1,9 @@
 import 'package:bytebank_final/screens/dashoard.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(BytebankApp());
+void main() {
+  runApp(const BytebankApp());
+}
 
 class BytebankApp extends StatelessWidget {
   const BytebankApp({Key? key}) : super(key: key);
