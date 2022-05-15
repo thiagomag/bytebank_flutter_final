@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../database/dao/contact_dao.dart';
 import '../models/contact.dart';
 
 class ContactForm extends StatefulWidget {
@@ -10,15 +11,21 @@ class ContactForm extends StatefulWidget {
 }
 
 class _ContactFormState extends State<ContactForm> {
+  static const String _novoContato = 'Novo Contato';
+  static const String _nomeCompleto = 'Nome Completo';
+  static const String _numeroConta = 'Numero Conta';
+  static const String _criar = 'Criar';
+
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _accountNumberController =
       TextEditingController();
+  final ContactDao _dao = ContactDao();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Novo Contato'),
+        title: const Text(_novoContato),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Padding(
@@ -28,7 +35,7 @@ class _ContactFormState extends State<ContactForm> {
             TextField(
               controller: _nameController,
               decoration: const InputDecoration(
-                labelText: 'Nome Completo',
+                labelText: _nomeCompleto,
               ),
               style: const TextStyle(
                 fontSize: 24.0,
@@ -39,7 +46,7 @@ class _ContactFormState extends State<ContactForm> {
               child: TextField(
                 controller: _accountNumberController,
                 decoration: const InputDecoration(
-                  labelText: 'Numero Conta',
+                  labelText: _numeroConta,
                 ),
                 style: const TextStyle(
                   fontSize: 24.0,
@@ -57,9 +64,9 @@ class _ContactFormState extends State<ContactForm> {
                     final int? accountNumber =
                         int.tryParse(_accountNumberController.text.toString());
                     final Contact newContact = Contact(0, name!, accountNumber!);
-                    Navigator.pop(context, newContact);
+                    _dao.save(newContact).then((id) => Navigator.pop(context));
                   },
-                  child: const Text('Criar'),
+                  child: const Text(_criar),
                 ),
               ),
             )
